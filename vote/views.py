@@ -118,6 +118,8 @@ def logic(request):
         elif aspl_done == False:
             return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
         elif spl_done == True and aspl_done == True:
+            spl_done = False
+            aspl_done = False
             return render(request, "vote/thanks.html")
         else:
             return HttpResponse("<h1>Some Server Error</h1>")
