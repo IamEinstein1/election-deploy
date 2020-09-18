@@ -104,20 +104,19 @@ num = 1
 
 
 def logic(request):
-    return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
-    # global num
-    # if num == 1:
-    #     num += 1
-    #     print(num)
-    #     return HttpResponseRedirect(reverse("voting:index"))
-    # else:
-    #     global spl_done
-    #     global aspl_done
-    #     if spl_done == False:
-    #         return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
-    #     elif aspl_done == False:
-    #         return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
-    #     elif spl_done == True and aspl_done == True:
-    #         return render(request, "vote/thanks.html")
-    #     else:
-    #         return HttpResponse("<h1>Some Server Error</h1>")
+    global num
+    if num == 1:
+        num += 1
+        print(num)
+        return HttpResponseRedirect(reverse("voting:index"))
+    else:
+        global spl_done
+        global aspl_done
+        if spl_done == False:
+            return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+        elif aspl_done == False:
+            return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+        elif spl_done == True and aspl_done == True:
+            return render(request, "vote/thanks.html")
+        else:
+            return HttpResponse("<h1>Some Server Error</h1>")
