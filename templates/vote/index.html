@@ -1,5 +1,3 @@
-<!-- to limit the number of open tabs download xtabs from the chrome store -->
-<!-- it is a free extension -->
 <html lang="en">
   <head>
     <link
@@ -102,11 +100,8 @@
     {% endif %}
     <form method="post" action="{% url 'voting:spl' %}">
       <div class="flex-container">
-        {% csrf_token %} {% for candidate in candidates %}
-        <!-- <br /> -->
-        &nbsp;
+        {% csrf_token %} {% for candidate in candidates %} &nbsp;
         <div class="card rounded bg-light align-items-center">
-          <!--border-0">-->
           <img
             src="{{candidate.img_url}}"
             class="rounded"
@@ -124,7 +119,7 @@
             {{ candidate.name }}
           </label>
         </div>
-        <!-- <br /> -->&nbsp; {% endfor %}
+        &nbsp; {% endfor %}
       </div>
       <br />
       <input
