@@ -1,0 +1,145 @@
+<!-- to limit the number of open tabs download xtabs from the chrome store -->
+<!-- it is a free extension -->
+<html lang="en">
+  <head>
+    <link
+      rel="icon"
+      href="https://brianpembershellharbour.files.wordpress.com/2011/08/vote-icon.jpg"
+      type="image/icon type"
+    />
+    <style>
+      body {
+        padding: 50px;
+        transition-duration: 1s;
+      }
+      .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      div .card {
+        padding: 1%;
+        transition-duration: 0.75s;
+        border-color: rgba(230, 235, 240, 0);
+        margin: 0.5%;
+      }
+      div .card:hover img {
+        opacity: 1;
+      }
+      img {
+        transition: 1s;
+        opacity: 0.75;
+      }
+      .img:hover {
+        opacity: 1;
+      }
+
+      .card:hover {
+        position: relative;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+        animation-name: ok2;
+        color: #1487fa;
+        font-weight: bold;
+        border-color: rgb(17, 132, 248);
+        border-width: 2px;
+      }
+      .input {
+        margin-top: 20px;
+      }
+      h1 {
+        transition-duration: 1s;
+        font-size: 50px;
+      }
+      @keyframes ok2 {
+        0% {
+          border-left: 100%;
+          font-size: 20px;
+          padding: 1%;
+        }
+        50% {
+          font-size: 25px;
+          padding: 0.5%;
+        }
+        100% {
+          font-size: 20px;
+          padding: 1%;
+        }
+      }
+      @keyframes ok {
+        0% {
+          font-size: 50px;
+        }
+        50% {
+          font-size: 55px;
+        }
+        100% {
+          font-size: 50px;
+        }
+      }
+      h1:hover {
+        position: relative;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        animation-name: ok;
+        color: #1487fa;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vote</title>
+  </head>
+
+  <body class="bg-light">
+    <h1>Vote for SPL</h1>
+    {% if error_message %}
+    <br /><br />
+    <h1><span class="alert alert-danger">{{ error_message }}</span></h1>
+    <br /><br />
+    {% endif %}
+    <form method="post" action="{% url 'voting:spl' %}">
+      <div class="flex-container">
+        {% csrf_token %} {% for candidate in candidates %}
+        <!-- <br /> -->
+        &nbsp;
+        <div class="card rounded bg-light align-items-center">
+          <!--border-0">-->
+          <img
+            src="{{candidate.img_url}}"
+            class="rounded"
+            alt=""
+            style="width: 150px; height: 150px"
+          />
+          <input
+            type="radio"
+            name="SPL"
+            id="candidate{{ forloop.counter }}"
+            value="{{ candidate.id }}"
+            class="input"
+          />
+          <label for="candidate{{ forloop.counter }}">
+            {{ candidate.name }}
+          </label>
+        </div>
+        <!-- <br /> -->&nbsp; {% endfor %}
+      </div>
+      <br />
+      <input
+        class="btn btn-outline-primary align-self-center"
+        type="submit"
+        name="submit"
+        value="Vote"
+        id="submit"
+      />
+
+      <br />
+      <br />
+      <a href="{% url 'voting:login' %}" class="btn btn-outline-primary"
+        >Results</a
+      >
+    </form>
+  </body>
+</html>
