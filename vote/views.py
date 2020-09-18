@@ -48,6 +48,7 @@ def aspl(request):
             selected_candidate.votes += 1
             selected_candidate.save()
             aspl_done = True
+
             return HttpResponseRedirect(reverse('voting:thanks'))
 
 
