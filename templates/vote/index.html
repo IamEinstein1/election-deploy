@@ -6,77 +6,77 @@
       type="image/icon type"
     />
     <style>
-            body {
-              padding: 50px;
-              transition-duration: 1s;
-            }
-            .flex-container {
-              display: flex;
-              flex-wrap: wrap;
-            }
-            div .card {
-              padding: 1%;
-              transition-duration: 0.75s;
-              margin: 0.5%;
-            }
-            div .card:hover img {
-              opacity: 1;
-            }
-            img {
-              transition: 1s;
-              opacity: 0.75;
-            }
-            .img:hover {
-              opacity: 1;
-            }
-
-            .card:hover {
-              position: relative;
-              animation-duration: 3s;
-              wards;
-              animation-name: ok2;
-              color: #1487fa;
-              font-weight: bold;
-            }
-            .input {
-              margin-top: 20px;
-            }
-            h1 {
-              transition-duration: 1s;
-              font-size: 50px;
-            }
-            @keyframes ok2 {
-              0% {
-                font-size: 20px;
-                padding: 1%;
-              }
-              50% {
-                font-size: 25px;
-                padding: 0.5%;
+      body {
+        padding: 50px;
+        transition-duration: 1s;
       }
-              100% {
-                font-size: 20px;
-                padding: 1%;
-              }
-            }
-            @keyframes ok {
-              0% {
-                font-size: 50px;
-              }
-              50% {
-       font-size: 55px;
-              }
-              100% {
-                font-size: 50px;
-              }
-            }
-            h1:hover {
-              position: relative;
-              animation-duration: 2s;
-              animation-fill-mode: forwards;
-              animation-name: ok;
-              color: #1487fa;
-            }
+      .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      div .card {
+        padding: 1%;
+        transition-duration: 0.75s;
+        margin: 0.5%;
+      }
+      div .card:hover img {
+        opacity: 1;
+      }
+      img {
+        transition: 1s;
+        opacity: 0.75;
+      }
+      .img:hover {
+        opacity: 1;
+      }
+
+      .card:hover {
+        position: relative;
+        animation-duration: 3s;
+
+        animation-name: ok2;
+        color: #1487fa;
+        font-weight: bold;
+      }
+      .input {
+        margin-top: 20px;
+      }
+      h1 {
+        transition-duration: 1s;
+        font-size: 50px;
+      }
+      @keyframes ok2 {
+        0% {
+          font-size: 20px;
+          padding: 1%;
+        }
+        50% {
+          font-size: 25px;
+          padding: 0.5%;
+
+        100% {
+          font-size: 20px;
+          padding: 1%;
+        }
+      }
+      @keyframes ok {
+        0% {
+          font-size: 50px;
+        }
+        50% {
+
+        }
+        100% {
+          font-size: 50px;
+        }
+      }
+      h1:hover {
+        position: relative;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        animation-name: ok;
+        color: #1487fa;
+      }
     </style>
     <link
       rel="stylesheet"
@@ -115,7 +115,6 @@
             {{ candidate.name }}
           </label>
         </div>
-        &nbsp; {% endfor %}
       </div>
       <br />
       <input

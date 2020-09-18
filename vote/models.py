@@ -19,3 +19,14 @@ class ASPL(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Animal(models.Model):
+    name = models.CharField(max_length=300)
+    sound = models.CharField(max_length=2048)
+
+    def __str__(self):
+        return self.name
+
+    def speak(self):
+        return f"The {self.name} says \"{self.sound}\""
