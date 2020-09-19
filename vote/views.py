@@ -1,8 +1,43 @@
-from django.shortcuts import render
-from .models import ASPL, SPL
+from datetime import datetime
+import socket
+import time
+from django.shortcuts import render, redirect
+from .models import ASPL, SPL, User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate
+
+
+def redirect_url(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        current_ip = x_forwarded_for.split(',')[0]
+        print(f"IP: {current_ip}")
+        try:
+            socket.inet_aton(current_ip)
+            ip_valid = True
+        except socket.error:
+            ip_valid = False
+    else:
+        current_ip = request.META.get('REMOTE_ADDR')
+        print(f"IP: (2nd method) {current_ip}")
+        try:
+            socket.inet_aton(current_ip)
+            ip_valid = True
+            try:
+                global current_user
+                current_user = User.objects.get(ip=current_ip)
+            except User.DoesNotExist:
+                global current_user
+                current_user = User.objects.create(
+                    ip=current_ip)
+
+        except socket.error:
+            ip_valid = False
+
+    print(f"IS valid: {ip_valid}, \n Addres:  {current_ip}")
+    return redirect("voting:logic")
 
 
 def index(request):
@@ -109,7 +144,7 @@ def logic(request):
     if num == 1:
         num += 1
         print(num)
-        return HttpResponseRedirect(reverse("voting:index"))
+        return redirect("voting:ip")
     else:
         global spl_done
         global aspl_done
