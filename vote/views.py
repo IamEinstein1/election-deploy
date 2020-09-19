@@ -119,11 +119,13 @@ def voted(request):
 
 
 def thanks(request):
-    global current_user
-    current_user.aspl_done = False
-    current_user.spl_done = False
-    current_user.save()
-    return render(request, 'vote/thanks.html')
+    if current_user == None:
+        return redirect("voting:ip")
+    else:
+        current_user.aspl_done = False
+        current_user.spl_done = False
+        current_user.save()
+        return render(request, 'vote/thanks.html')
 
 
 def result(request):
