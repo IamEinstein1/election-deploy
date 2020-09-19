@@ -147,9 +147,11 @@ def login(request):
 def logic(request):
     global current_user
     if current_user.spl_done == False:
-        return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+        return redirect("voting:index")
+        # return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
     elif current_user.aspl_done == False:
-        return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+        return redirect("voting:voted")
+        # return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
     elif current_user.spl_done == True and current_user.aspl_done == True:
         current_user.spl_done = False
         current_user.aspl_done = False
