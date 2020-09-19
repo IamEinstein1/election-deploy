@@ -26,6 +26,7 @@ def redirect_url(request):
             ip_valid = True
             try:
                 global current_user
+
                 current_user = User.objects.get(ip=current_ip)
             except User.DoesNotExist:
                 # global current_user
