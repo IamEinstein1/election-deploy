@@ -1,4 +1,5 @@
 import socket
+
 from django.shortcuts import render, redirect
 from .models import ASPL, SPL, User
 from django.http import HttpResponseRedirect, HttpResponse

@@ -30,13 +30,3 @@ class Animal(models.Model):
 
     def speak(self):
         return f"The {self.name} says \"{self.sound}\""
-
-
-class User(models.Model):
-    ip = models.CharField(max_length=2048)
-    spl_done = models.BooleanField(default=False)
-    aspl_done = models.BooleanField(default=False)
-    last_seen = models.DateTimeField(blank=True, default=None, null=True)
-
-    def __str__(self):
-        return self.ip, self.id, self.aspl_done, self.spl_done

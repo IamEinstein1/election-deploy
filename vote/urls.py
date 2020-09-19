@@ -10,6 +10,5 @@ urlpatterns = [
     path('spl/', views.spl, name="spl"),
     path('result/', views.result, name="result"),
     path('login/', views.login, name="login"),
-    path('ip/', views.redirect_url, name="ip")
 
 ]
