@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 global current_user
 
 
-def redirect_url(request):
+def ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         current_ip = x_forwarded_for.split(',')[0]
@@ -27,6 +27,7 @@ def redirect_url(request):
             try:
                 global current_user
                 current_user = User.objects.get(ip=current_ip)
+
             except User.DoesNotExist:
                 # global current_user
                 current_user = User.objects.create(ip=current_ip)
@@ -130,23 +131,23 @@ num = 1
 
 
 def logic(request):
-    global num
-    if num == 1:
-        num += 1
-        print(num)
-        return redirect("voting:ip")
+    # global num
+    # if num == 1:
+    # num += 1
+    # print(num)
+    # return redirect("voting:ip")
+    # else:
+    global current_user
+    if current_user.spl_done == False:
+        return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+    elif current_user.aspl_done == False:
+        return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+    elif current_user.spl_done == True and current_user.aspl_done == True:
+        current_user.spl_done = False
+        current_user.aspl_done = False
+        return render(request, "vote/thanks.html")
     else:
-        global current_user
-        if current_user.spl_done == False:
-            return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
-        elif current_user.aspl_done == False:
-            return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
-        elif current_user.spl_done == True and current_user.aspl_done == True:
-            current_user.spl_done = False
-            current_user.aspl_done = False
-            return render(request, "vote/thanks.html")
-        else:
-            return HttpResponse("<h1>Some Server Error</h1>")
+        return HttpResponse("<h1>Some Server Error</h1>")
 
 
 # import socket
