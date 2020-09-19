@@ -20,7 +20,7 @@ class ASPL(models.Model):
     def __str__(self):
         return self.name
 
-
+'''
 class Animal(models.Model):
     name = models.CharField(max_length=300)
     sound = models.CharField(max_length=2048)
@@ -30,7 +30,7 @@ class Animal(models.Model):
 
     def speak(self):
         return f"The {self.name} says \"{self.sound}\""
-
+'''
 
 class User(models.Model):
     ip = models.CharField(max_length=200)
