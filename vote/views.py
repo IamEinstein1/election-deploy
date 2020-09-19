@@ -16,8 +16,14 @@ def ip(request):
         try:
             socket.inet_aton(current_ip)
             ip_valid = True
+            global current_user
+            current_user = User.objects.get(ip=current_ip)
+            current_user.save()
         except socket.error:
             ip_valid = False
+            global current_user
+            current_user = User.objects.get(ip=current_ip)
+            current_user.save()
     else:
         current_ip = request.META.get('REMOTE_ADDR')
         print(f"IP: (2nd method) {current_ip}")

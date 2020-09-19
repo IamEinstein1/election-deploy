@@ -3,5 +3,5 @@ python:
   - 3.8.5
 services:
   - docker
-script: python manage.py test
+script: docker-compose run web python manage.py test
 install: pip install -r requirements.txt
