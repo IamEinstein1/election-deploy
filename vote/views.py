@@ -5,7 +5,6 @@ from .models import ASPL, SPL, User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate
-# global current_user
 
 
 def ip(request):
@@ -25,7 +24,7 @@ def ip(request):
             current_user = User.objects.get(ip=current_ip)
             current_user.save()
     else:
-        global current_user
+        # global current_user
         current_ip = request.META.get('REMOTE_ADDR')
         print(f"IP: (2nd method) {current_ip}")
         try:
@@ -45,7 +44,7 @@ def ip(request):
 
 
 def index(request):
-    global current_user
+    # global current_user
     current_user.spl_done = False
     current_user.aspl_done = False
     current_user.save()
