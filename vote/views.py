@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import ASPL, SPL, 
+from .models import ASPL, SPL
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate
