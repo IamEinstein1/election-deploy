@@ -14,9 +14,9 @@ def ip(request):
         current_ip = x_forwarded_for.split(',')[0]
         print(f"IP: {current_ip}")
         try:
+            global current_user
             socket.inet_aton(current_ip)
             ip_valid = True
-            global current_user
             current_user = User.objects.get(ip=current_ip)
             current_user.save()
         except socket.error:
@@ -25,13 +25,13 @@ def ip(request):
             current_user = User.objects.get(ip=current_ip)
             current_user.save()
     else:
+        global current_user
         current_ip = request.META.get('REMOTE_ADDR')
         print(f"IP: (2nd method) {current_ip}")
         try:
             socket.inet_aton(current_ip)
             ip_valid = True
             try:
-                global current_user
                 current_user = User.objects.get(ip=current_ip)
                 current_user.save()
             except User.DoesNotExist:
