@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 app_name = "voting"
 urlpatterns = [
-    path('', views.logic, name="logic"),
+    path('', views.ip, name="logic"),
+    path('logc/', views.logic, name="log"),
     path('index/', views.index, name="index"),
     path('voted/', views.voted, name="voted"),
     path('thanks/', views.thanks, name="thanks"),
