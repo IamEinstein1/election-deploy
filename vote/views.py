@@ -19,7 +19,7 @@ def ip(request):
                 global current_user
                 current_user = User.objects.get(ip=current_ip)
                 current_user.save()
-            except User.DoesNotExist:
+            except (User.DoesNotExist, NameError):
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
         except socket.error:
@@ -34,7 +34,7 @@ def ip(request):
             try:
                 current_user = User.objects.get(ip=current_ip)
                 current_user.save()
-            except User.DoesNotExist:
+            except (User.DoesNotExist, NameError):
                 # global current_user
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
