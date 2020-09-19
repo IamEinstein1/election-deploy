@@ -102,15 +102,18 @@ def aspl(request):
 
 def voted(request):
     try:
-        global current_user
-        if current_user.spl_done == False:
-            return redirect("voting:index")
-        elif current_user.aspl_done == False:
-            return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
-        elif current_user.spl_done == True and current_user.aspl_done == True:
-            return redirect("voting:thanks")
+        if current_user == None:
+            return redirect("voting:ip")
         else:
-            return HttpResponse("<h1>Some Server Error</h1>")
+            global current_user
+            if current_user.spl_done == False:
+                return redirect("voting:index")
+            elif current_user.aspl_done == False:
+                return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+            elif current_user.spl_done == True and current_user.aspl_done == True:
+                return redirect("voting:thanks")
+            else:
+                return HttpResponse("<h1>Some Server Error</h1>")
     except(ValueError, NameError):
         return render(request, "vote/error.html", context={"text": "Invalid method", "type": "info"})
 
