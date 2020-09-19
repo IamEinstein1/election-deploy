@@ -7,8 +7,8 @@ from django.urls import reverse
 from django.contrib.auth import authenticate
 
 
-#Uncomment the following line and see if it works
-#current_user = None
+# Uncomment the following line and see if it works
+current_user = None
 
 
 def ip(request):
@@ -20,13 +20,15 @@ def ip(request):
             socket.inet_aton(current_ip)
             ip_valid = True
             try:
-                global current_user 
+                global current_user
                 '''IMPORTANT - If you are creating a instance of a class here and also using global, you WILL GET error
                 when you put "global variable_name" python searches for variables with the name "variable_name" in the global scope, as 
                 you have not already created it python won't be able to find any variable, hence it shows the error 
+
                 '''
                 current_user = User.objects.get(ip=current_ip)
                 current_user.save()
+                print(current_user)
             except (User.DoesNotExist, NameError):
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
