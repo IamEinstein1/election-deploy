@@ -109,7 +109,7 @@ def logic(request):
     if num == 1:
         num += 1
         print(num)
-        return redirect("voting:ip")
+        return redirect("voting:index")
     else:
         global spl_done
         global aspl_done
