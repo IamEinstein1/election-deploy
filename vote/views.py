@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.contrib.auth import authenticate
 
 
-# Uncomment the following line and see if it works
 current_user = None
 
 
@@ -14,10 +13,8 @@ def ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         current_ip = x_forwarded_for.split(',')[0]
-        print(f"IP: {current_ip}")
         try:
             socket.inet_aton(current_ip)
-            ip_valid = True
             try:
                 global current_user
                 '''IMPORTANT - If you are creating a instance of a class here and also using global, you WILL GET error
@@ -28,30 +25,24 @@ def ip(request):
                 current_user = User.objects.get(ip=current_ip)
                 current_user.times_visited += 1
                 current_user.save()
-                print(current_user)
-            except (User.DoesNotExist, NameError):
+            except (User.DoesNotExist, NameError, KeyError):
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
         except socket.error:
-            ip_valid = False
             return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
     else:
         current_ip = request.META.get('REMOTE_ADDR')
-        print(f"IP: (2nd method) {current_ip}")
         try:
             socket.inet_aton(current_ip)
-            ip_valid = True
             try:
                 current_user = User.objects.get(ip=current_ip)
                 current_user.times_visited += 1
                 current_user.save()
-            except (User.DoesNotExist, NameError):
-                # global current_user
+            except (User.DoesNotExist, NameError, KeyError):
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
         except socket.error:
-            ip_valid = False
-    print(f"IS valid: {ip_valid}, \n Addres:  {current_ip}")
+            return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
     return redirect("voting:logic")
 
 
@@ -60,7 +51,6 @@ def index(request):
         if current_user == None:
             return redirect("voting:ip")
         else:
-            # global current_user
             if current_user.spl_done == False:
                 return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
             elif current_user.aspl_done == False:
@@ -72,24 +62,16 @@ def index(request):
     except(ValueError, NameError):
         return render(request, "vote/error.html", context={"text": "Invalid method", "type": "info"})
 
-    # global current_user
-    # current_user.spl_done = False
-    # current_user.aspl_done = False
-    # current_user.save()
-    # candidates = SPL.objects.all()
-    # return render(request, 'vote/index.html', context={"candidates": candidates})
-
 
 def spl(request):
     if request.method == "GET":
         return render(request, "vote/error.html", context={"text": "Invalid method", "type": "primary"})
-    else:
+    elif request.method == "POST":
         try:
             selected_candidate = SPL.objects.get(pk=request.POST['SPL'])
         except(KeyError, SPL.DoesNotExist):
             candidates = SPL.objects.all()
-            error = "You have not selected a candidate."
-            return render(request, 'vote/index.html', {'candidates': candidates, 'error_message': error})
+            return render(request, 'vote/index.html', {'candidates': candidates, 'error_message': "You have not selected a candidate."})
         else:
             global current_user
             selected_candidate.votes += 1
@@ -163,16 +145,14 @@ def login(request):
 
 def logic(request):
     global current_user
-    if current_user.spl_done == False:
-        return redirect("voting:index")
-        # return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
-    elif current_user.aspl_done == False:
-        return redirect("voting:voted")
-        # return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
-    elif current_user.spl_done == True and current_user.aspl_done == True:
-        current_user.spl_done = False
-        current_user.aspl_done = False
-        current_user.save()
-        return render(request, "vote/thanks.html")
+    if current_user == None:
+        return render("voting:ip")
     else:
-        return HttpResponse("<h1>Some Server Error</h1>")
+        if current_user.spl_done == False:
+            return redirect("voting:index")
+        elif current_user.aspl_done == False:
+            return redirect("voting:voted")
+        elif current_user.spl_done == True and current_user.aspl_done == True:
+            return redirect("voting:thanks")
+        else:
+            return HttpResponse("<h1>Some Server Error</h1>")
