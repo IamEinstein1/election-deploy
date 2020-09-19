@@ -41,7 +41,7 @@ def ip(request):
 def index(request):
     global current_user
     current_user.spl_done = False
-    current_user.aspl_done = 
+    current_user.aspl_done = False
     current_user.save()
     candidates = SPL.objects.all()
     return render(request, 'vote/index.html', context={"candidates": candidates})
