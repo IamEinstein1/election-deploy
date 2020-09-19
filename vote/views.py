@@ -105,7 +105,7 @@ def voted(request):
         if current_user == None:
             return redirect("voting:ip")
         else:
-            global current_user
+            # global current_user
             if current_user.spl_done == False:
                 return redirect("voting:index")
             elif current_user.aspl_done == False:
