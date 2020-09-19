@@ -5,7 +5,7 @@ from .models import ASPL, SPL, User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate
-global current_user
+# global current_user
 
 
 def ip(request):
@@ -21,7 +21,7 @@ def ip(request):
             current_user.save()
         except socket.error:
             ip_valid = False
-            global current_user
+            # global current_user
             current_user = User.objects.get(ip=current_ip)
             current_user.save()
     else:
