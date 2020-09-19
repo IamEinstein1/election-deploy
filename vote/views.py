@@ -7,6 +7,10 @@ from django.urls import reverse
 from django.contrib.auth import authenticate
 
 
+#Uncomment the following line and see if it works
+#current_user = None
+
+
 def ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
