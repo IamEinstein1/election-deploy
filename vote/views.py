@@ -21,11 +21,12 @@ def ip(request):
             try:
                 global current_user
                 '''IMPORTANT - If you are creating a instance of a class here and also using global, you WILL GET error
-                when you put "global variable_name" python searches for variables with the name "variable_name" in the global scope, as 
-                you have not already created it python won't be able to find any variable, hence it shows the error 
+                when you put "global variable_name" python searches for variables with the name "variable_name" in the global scope, as
+                you have not already created it python won't be able to find any variable, hence it shows the error
 
                 '''
                 current_user = User.objects.get(ip=current_ip)
+                current_user.times_visited += 1
                 current_user.save()
                 print(current_user)
             except (User.DoesNotExist, NameError):
@@ -42,6 +43,7 @@ def ip(request):
             ip_valid = True
             try:
                 current_user = User.objects.get(ip=current_ip)
+                current_user.times_visited += 1
                 current_user.save()
             except (User.DoesNotExist, NameError):
                 # global current_user
@@ -55,15 +57,18 @@ def ip(request):
 
 def index(request):
     try:
-        global current_user
-        if current_user.spl_done == False:
-            return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
-        elif current_user.aspl_done == False:
-            return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
-        elif current_user.spl_done == True and current_user.aspl_done == True:
-            return render(request, "vote/thanks.html")
+        if current_user == None:
+            return redirect("voting:ip")
         else:
-            return HttpResponse("<h1>Some Server Error</h1>")
+            # global current_user
+            if current_user.spl_done == False:
+                return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+            elif current_user.aspl_done == False:
+                return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+            elif current_user.spl_done == True and current_user.aspl_done == True:
+                return render(request, "vote/thanks.html")
+            else:
+                return HttpResponse("<h1>Some Server Error</h1>")
     except(ValueError, NameError):
         return render(request, "vote/error.html", context={"text": "Invalid method", "type": "info"})
 

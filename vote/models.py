@@ -33,6 +33,8 @@ class Animal(models.Model):
 
 
 class User(models.Model):
-    ip = models.CharField(max_length=200)
+    # id = models.AutoField(primary_key=False)
+    ip = models.CharField(max_length=200, primary_key=True)
     aspl_done = models.BooleanField(default=False)
     spl_done = models.BooleanField(default=False)
+    times_visited = models.IntegerField(default=0, null=False)
