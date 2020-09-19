@@ -1,5 +1,4 @@
 import socket
-
 from django.shortcuts import render, redirect
 from .models import ASPL, SPL, User
 from django.http import HttpResponseRedirect, HttpResponse
@@ -55,12 +54,25 @@ def ip(request):
 
 
 def index(request):
+    try:
+        global current_user
+        if current_user.spl_done == False:
+            return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+        elif current_user.aspl_done == False:
+            return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+        elif current_user.spl_done == True and current_user.aspl_done == True:
+            return render(request, "vote/thanks.html")
+        else:
+            return HttpResponse("<h1>Some Server Error</h1>")
+    except(ValueError, NameError):
+        return render(request, "vote/error.html", context={"text": "Invalid method", "type": "info"})
+
     # global current_user
-    current_user.spl_done = False
-    current_user.aspl_done = False
-    current_user.save()
-    candidates = SPL.objects.all()
-    return render(request, 'vote/index.html', context={"candidates": candidates})
+    # current_user.spl_done = False
+    # current_user.aspl_done = False
+    # current_user.save()
+    # candidates = SPL.objects.all()
+    # return render(request, 'vote/index.html', context={"candidates": candidates})
 
 
 def spl(request):
