@@ -16,13 +16,17 @@ def ip(request):
             global current_user
             socket.inet_aton(current_ip)
             ip_valid = True
-            current_user = User.objects.get(ip=current_ip)
-            current_user.save()
+            try:
+                current_user = User.objects.get(ip=current_ip)
+                current_user.save()
+            except User.DoesNotExist:
+                # global current_user
+                current_user = User.objects.create(ip=current_ip)
+                current_user.save()
         except socket.error:
             ip_valid = False
             # global current_user
-            current_user = User.objects.get(ip=current_ip)
-            current_user.save()
+            return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
     else:
         # global current_user
         current_ip = request.META.get('REMOTE_ADDR')
