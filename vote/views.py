@@ -153,9 +153,9 @@ def logic(request):
     if current_user == None:
         return redirect("voting:ip")
     else:
-        if current_user.spl_done == False:
+        if current_user.spl_done == False and current_user.aspl_done == False:
             return redirect("voting:index")
-        elif current_user.aspl_done == False:
+        elif current_user.aspl_done == False and current_user.spl_done == True:
             return redirect("voting:voted")
         elif current_user.spl_done == True and current_user.aspl_done == True:
             return redirect("voting:thanks")
