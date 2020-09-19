@@ -54,9 +54,9 @@ def index(request):
             if current_user.spl_done == False:
                 return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
             elif current_user.aspl_done == False:
-                return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
+                return redirect("voting:voted")
             elif current_user.spl_done == True and current_user.aspl_done == True:
-                return render(request, "vote/thanks.html")
+                return redirect("voting:thanks")
             else:
                 return HttpResponse("<h1>Some Server Error</h1>")
     except(ValueError, NameError):
@@ -104,11 +104,11 @@ def voted(request):
     try:
         global current_user
         if current_user.spl_done == False:
-            return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+            return redirect("voting:index")
         elif current_user.aspl_done == False:
             return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
         elif current_user.spl_done == True and current_user.aspl_done == True:
-            return render(request, "vote/thanks.html")
+            return redirect("voting:thanks")
         else:
             return HttpResponse("<h1>Some Server Error</h1>")
     except(ValueError, NameError):
