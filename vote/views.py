@@ -27,10 +27,11 @@ def ip(request):
             try:
                 global current_user
                 current_user = User.objects.get(ip=current_ip)
-
+                current_user.save()
             except User.DoesNotExist:
                 # global current_user
                 current_user = User.objects.create(ip=current_ip)
+                current_user.save()
         except socket.error:
             ip_valid = False
     print(f"IS valid: {ip_valid}, \n Addres:  {current_ip}")
@@ -40,7 +41,8 @@ def ip(request):
 def index(request):
     global current_user
     current_user.spl_done = False
-    current_user.aspl_done = False
+    current_user.aspl_done = 
+    current_user.save()
     candidates = SPL.objects.all()
     return render(request, 'vote/index.html', context={"candidates": candidates})
 
@@ -60,6 +62,7 @@ def spl(request):
             selected_candidate.votes += 1
             selected_candidate.save()
             current_user.spl_done = True
+            current_user.save()
             return HttpResponseRedirect(reverse('voting:voted'))
 
 
@@ -78,6 +81,7 @@ def aspl(request):
             selected_candidate.votes += 1
             selected_candidate.save()
             current_user.aspl_done = True
+            current_user.save()
             return HttpResponseRedirect(reverse('voting:thanks'))
 
 
@@ -102,6 +106,7 @@ def thanks(request):
     global current_user
     current_user.aspl_done = False
     current_user.spl_done = False
+    current_user.save()
     return render(request, 'vote/thanks.html')
 
 
@@ -145,6 +150,7 @@ def logic(request):
     elif current_user.spl_done == True and current_user.aspl_done == True:
         current_user.spl_done = False
         current_user.aspl_done = False
+        current_user.save()
         return render(request, "vote/thanks.html")
     else:
         return HttpResponse("<h1>Some Server Error</h1>")
