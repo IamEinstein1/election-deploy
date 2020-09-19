@@ -146,7 +146,7 @@ def login(request):
 def logic(request):
     global current_user
     if current_user == None:
-        return render("voting:ip")
+        return redirect("voting:ip")
     else:
         if current_user.spl_done == False:
             return redirect("voting:index")
