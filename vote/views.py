@@ -51,9 +51,9 @@ def index(request):
         if current_user == None:
             return redirect("voting:ip")
         else:
-            if current_user.spl_done == False:
+            if current_user.spl_done == False and current_user.aspl_done == False:
                 return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
-            elif current_user.aspl_done == False:
+            elif current_user.aspl_done == False and current_user.spl_done == True:
                 return redirect("voting:voted")
             elif current_user.spl_done == True and current_user.aspl_done == True:
                 return redirect("voting:thanks")
@@ -106,9 +106,9 @@ def voted(request):
             return redirect("voting:ip")
         else:
             # global current_user
-            if current_user.spl_done == False:
+            if current_user.spl_done == False and current_user.aspl_done == False:
                 return redirect("voting:index")
-            elif current_user.aspl_done == False:
+            elif current_user.aspl_done == False and current_user.spl_done == True:
                 return render(request, "vote/voted.html", context={"candidates": ASPL.objects.all()})
             elif current_user.spl_done == True and current_user.aspl_done == True:
                 return redirect("voting:thanks")
