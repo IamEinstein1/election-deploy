@@ -36,22 +36,6 @@ def ip(request):
                         # return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
                 except (User.DoesNotExist, NameError, KeyError):
                     return render(request, "vote/email.html")
-                    # if request.method == "POST":
-                    # email = request.POST['mail']
-                    # if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
-                    # return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
-                    # else:
-                    # current_user = User.objects.create(ip=current_ip)
-                    # current_user.save()
-                    # current_user.times_visited += 1
-                    # current_user.save()
-                    # return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
-                    # elif request.method == "GET" and current_user == None:
-                    # current_user = User.objects.create(ip=current_ip)
-                    # current_user.save()
-                    # current_user.times_visited += 1
-                    # current_user.save()
-                    # return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
                 else:
                     return redirect("voting:logic")
             except socket.error:
