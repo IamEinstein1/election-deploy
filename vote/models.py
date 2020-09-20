@@ -34,6 +34,7 @@ class Animal(models.Model):
 
 class User(models.Model):
     # id = models.AutoField(primary_key=False)
+    name = models.CharField(null=True, max_length=200)
     ip = models.CharField(max_length=200, primary_key=True)
     aspl_done = models.BooleanField(default=False)
     spl_done = models.BooleanField(default=False)

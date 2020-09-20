@@ -28,6 +28,7 @@ def ip(request):
             except (User.DoesNotExist, NameError, KeyError):
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
+                return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
         except socket.error:
             return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
     else:
@@ -41,6 +42,7 @@ def ip(request):
             except (User.DoesNotExist, NameError, KeyError):
                 current_user = User.objects.create(ip=current_ip)
                 current_user.save()
+                return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
         except socket.error:
             return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
     return redirect("voting:logic")
@@ -52,7 +54,7 @@ def index(request):
             return redirect("voting:ip")
         else:
             if current_user.spl_done == False and current_user.aspl_done == False:
-                return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
+                return render(request, "vote/index.html", context={"candidates": SPL.objects.all())
             elif current_user.aspl_done == False and current_user.spl_done == True:
                 return redirect("voting:voted")
             elif current_user.spl_done == True and current_user.aspl_done == True:
@@ -73,12 +75,22 @@ def spl(request):
             candidates = SPL.objects.all()
             return render(request, 'vote/index.html', {'candidates': candidates, 'error_message': "You have not selected a candidate."})
         else:
-            global current_user
-            selected_candidate.votes += 1
-            selected_candidate.save()
-            current_user.spl_done = True
-            current_user.save()
-            return HttpResponseRedirect(reverse('voting:voted'))
+            if 'name' in request.POST:
+                global current_user
+                selected_candidate.votes += 1
+                selected_candidate.save()
+                current_user.spl_done = True
+                current_user.name = request.POST['name']
+
+                current_user.save()
+                return HttpResponseRedirect(reverse('voting:voted'))
+            else:
+                selected_candidate.votes += 1
+                selected_candidate.save()
+                current_user.spl_done = True
+
+                current_user.save()
+                return HttpResponseRedirect(reverse('voting:voted'))
 
 
 def aspl(request):
