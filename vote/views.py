@@ -1,3 +1,4 @@
+import re
 import socket
 from django.shortcuts import render, redirect
 from .models import ASPL, SPL, User
@@ -5,47 +6,94 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate
 
-
+num = 1
 current_user = None
 
 
 def ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        current_ip = x_forwarded_for.split(',')[0]
-        try:
-            socket.inet_aton(current_ip)
+    if request.method == "GET":
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            current_ip = x_forwarded_for.split(',')[0]
             try:
-                global current_user
-                '''IMPORTANT - If you are creating a instance of a class here and also using global, you WILL GET error
-                when you put "global variable_name" python searches for variables with the name "variable_name" in the global scope, as
-                you have not already created it python won't be able to find any variable, hence it shows the error
-
-                '''
-                current_user = User.objects.get(ip=current_ip)
-                current_user.times_visited += 1
-                current_user.save()
-            except (User.DoesNotExist, NameError, KeyError):
-                current_user = User.objects.create(ip=current_ip)
-                current_user.save()
-                return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
-        except socket.error:
-            return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
-    else:
-        current_ip = request.META.get('REMOTE_ADDR')
-        try:
-            socket.inet_aton(current_ip)
+                socket.inet_aton(current_ip)
+                try:
+                    global current_user
+                    current_user = User.objects.get(ip=current_ip)
+                    current_user.times_visited += 1
+                    current_user.save()
+                except (User.DoesNotExist, NameError, KeyError):
+                    current_user = User.objects.create(ip=current_ip)
+                    current_user.save()
+                    return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
+            except socket.error:
+                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
+        else:
+            current_ip = request.META.get('REMOTE_ADDR')
             try:
-                current_user = User.objects.get(ip=current_ip)
-                current_user.times_visited += 1
-                current_user.save()
-            except (User.DoesNotExist, NameError, KeyError):
-                current_user = User.objects.create(ip=current_ip)
-                current_user.save()
-                return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
-        except socket.error:
-            return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
-    return redirect("voting:logic")
+                socket.inet_aton(current_ip)
+                try:
+                    current_user = User.objects.get(ip=current_ip)
+                    current_user.times_visited += 1
+                    current_user.save()
+                except (User.DoesNotExist, NameError, KeyError):
+                    current_user = User.objects.create(ip=current_ip)
+                    current_user.save()
+                    return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
+            except socket.error:
+                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
+        return redirect("voting:logic")
+    elif request.method == "POST":
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            current_ip = x_forwarded_for.split(',')[0]
+            try:
+                socket.inet_aton(current_ip)
+                try:
+                    current_user = User.objects.get(ip=current_ip)
+                    email = request.POST['mail']
+                    if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
+                        return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
+                    else:
+                        current_user.email = email
+                        current_user.times_visited += 1
+                        current_user.save()
+                except (User.DoesNotExist, NameError, KeyError):
+                    current_user = User.objects.create(ip=current_ip)
+                    email = request.POST['mail']
+                    if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
+                        return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
+                    else:
+                        current_user.email = email
+                        current_user.save()
+                    return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
+            except socket.error:
+                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
+        else:
+            current_ip = request.META.get('REMOTE_ADDR')
+            try:
+                socket.inet_aton(current_ip)
+                try:
+                    current_user = User.objects.get(ip=current_ip)
+                    current_user.times_visited += 1
+                    email = request.POST['mail']
+                    if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
+                        return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
+                    else:
+                        current_user.email = email
+                    current_user.save()
+                except (User.DoesNotExist, NameError, KeyError):
+                    current_user = User.objects.create(ip=current_ip)
+                    email = request.POST['mail']
+                    if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
+                        return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
+                    else:
+                        current_user.email = email
+                    current_user.save()
+                    return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
+            except socket.error:
+                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
+        return redirect("voting:logic")
 
 
 def index(request):
@@ -173,3 +221,25 @@ def logic(request):
             return redirect("voting:thanks")
         else:
             return HttpResponse("<h1>Some Server Error</h1>")
+
+
+# def templater(request):
+    # global num
+    # if num == 1:
+        # num += 1
+        # return redirect("voting:ip")
+    # if current_user.email == "mail":
+        # return render(request, "vote/email.html")
+    # else:
+        # print(current_user.mail)
+        # return redirect("voting:logic")
+#
+#
+# def email(request):
+    # if request.method == "POST":
+        # email = request.POST['mail']
+        # if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
+            # return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
+        # else:
+            # return redirect("voting:ip")
+#

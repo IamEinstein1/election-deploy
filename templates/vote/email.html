@@ -1,0 +1,43 @@
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width='device-width', initial-scale=1.0" />
+    <title>Mail</title>
+    <style>
+      body {
+        padding: 50px;
+      }
+    </style>
+  </head>
+  <h1>Enter your school mail</h1>
+  {% if error_message %}
+  <div class="alert alert-danger">{{error_message}}</div>
+  {% endif %}
+  <body class="bg-light">
+    <form action="{% url 'voting:ip' %}" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Email"
+          id="mail"
+          name="mail"
+          class="form-control"
+        />
+      </div>
+      <input
+        type="submit"
+        value="Submit"
+        class="btn btn-outline-success"
+        ,
+        name=""
+        ,
+        id="submit"
+      />
+    </form>
+  </body>
+</html>
