@@ -54,7 +54,7 @@ def index(request):
             return redirect("voting:ip")
         else:
             if current_user.spl_done == False and current_user.aspl_done == False:
-                return render(request, "vote/index.html", context={"candidates": SPL.objects.all())
+                return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
             elif current_user.aspl_done == False and current_user.spl_done == True:
                 return redirect("voting:voted")
             elif current_user.spl_done == True and current_user.aspl_done == True:
