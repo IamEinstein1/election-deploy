@@ -11,6 +11,7 @@ current_user = None
 def ip(request):
     global current_user
     if request.method == "GET":
+
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             current_ip = x_forwarded_for.split(',')[0]
@@ -35,7 +36,10 @@ def ip(request):
         else:
             current_user.times_visited += 1
             current_user.save()
-        return redirect("voting:logic")
+        if current_user.mail_real == False and current_user.times_visited > 1:
+            return redirect("voting:mail")
+        else:
+            return redirect("voting:logic")
     elif request.method == "POST":
         mail = request.POST['mail']
         pattern = r'\w+40\d{4}@npschennai.com'
@@ -184,7 +188,7 @@ def login(request):
 
 def logic(request):
     global current_user
-    if current_user == None or current_user.email == "mail":
+    if current_user == None:
         return redirect("voting:ip")
     else:
         if current_user.spl_done == False and current_user.aspl_done == False:
