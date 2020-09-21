@@ -79,8 +79,11 @@ def ip(request):
 
 def index(request):
     try:
-        if current_user == None or current_user.email == "mail":
+        if current_user == None:
+
             return redirect("voting:ip")
+        elif current_user.mail_real == False:
+            return redirect("voting:mail")
         else:
             if current_user.spl_done == False and current_user.aspl_done == False:
                 return render(request, "vote/index.html", context={"candidates": SPL.objects.all()})
@@ -104,8 +107,10 @@ def spl(request):
             candidates = SPL.objects.all()
             return render(request, 'vote/index.html', {'candidates': candidates, 'error_message': "You have not selected a candidate."})
         else:
-            if current_user == None or current_user.email == "mail":
+            if current_user == None:
                 return redirect("voting:ip")
+            elif current_user.mail_real == False:
+                return redirect("voting:mail")
             else:
                 # global current_user
                 selected_candidate.votes += 1
@@ -119,6 +124,7 @@ def spl(request):
 def aspl(request):
     if request.method == "GET":
         return render(request, "vote/error.html", context={"text": "Invalid method", "type": "info"})
+
     else:
         try:
             selected_candidate = ASPL.objects.get(pk=request.POST['ASPL'])
@@ -127,8 +133,10 @@ def aspl(request):
             error = "You have not selected a candidate"
             return render(request, 'vote/voted.html', {'candidates': candidates, 'error_message': error})
         else:
-            if current_user == None or current_user.email == "mail":
+            if current_user == None:
                 return redirect("voting:ip")
+            elif current_user.mail_real == False:
+                return redirect("voting:mail")
             else:
                 # global current_user
                 selected_candidate.votes += 1
@@ -140,8 +148,10 @@ def aspl(request):
 
 def voted(request):
     try:
-        if current_user == None or current_user.email == "mail":
+        if current_user == None:
             return redirect("voting:ip")
+        elif current_user.mail_real == False:
+            return redirect("voting:mail")
         else:
             # global current_user
             if current_user.spl_done == False and current_user.aspl_done == False:
