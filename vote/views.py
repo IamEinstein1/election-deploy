@@ -10,85 +10,67 @@ current_user = None
 
 def ip(request):
     global current_user
-    if current_user == None or current_user.email == "mail":
+    if request.method == "GET":
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             current_ip = x_forwarded_for.split(',')[0]
             try:
                 socket.inet_aton(current_ip)
-                try:
-                    current_user = User.objects.get(ip=current_ip)
-                    if request.method == "POST":
-                        email = request.POST['mail']
-                        if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
-                            return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
-                        else:
-                            current_user = User.objects.create(ip=current_ip)
-                            current_user.save()
-                            current_user.times_visited += 1
-                            current_user.save()
-                            # return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
-                    elif request.method == "GET" and current_user == None:
-                        current_user = User.objects.create(ip=current_ip)
-                        current_user.save()
-                        current_user.times_visited += 1
-                        current_user.save()
-                        # return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
-                except (User.DoesNotExist, NameError, KeyError):
-                    return render(request, "vote/email.html")
-                else:
-                    return redirect("voting:logic")
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
         else:
             current_ip = request.META.get('REMOTE_ADDR')
             try:
                 socket.inet_aton(current_ip)
-                try:
-                    # global current_user
-                    current_user = User.objects.get(ip=current_ip)
-                    if request.method == "POST":
-                        email = request.POST['mail']
-                        if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
-                            return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
-                        else:
-                            current_user = User.objects.create(ip=current_ip)
-                            current_user.save()
-                            current_user.times_visited += 1
-                            current_user.save()
-                    elif request.method == "GET":
-                        current_user.times_visited += 1
-                        current_user.save()
-                    # return redirect("voting:logic")
-
-                except (User.DoesNotExist, NameError, KeyError):
-                    if request.method == "POST":
-                        email = request.POST['mail']
-                        if re.match(r"\w+40\d{4}@npschennai.com", email) == None:
-                            return render(request, "vote/email.html", context={"error_message": "Enter a valid email\n The format should be 'name40admissionno@npschennai.com'"})
-                        else:
-                            current_user = User.objects.create(ip=current_ip)
-                            current_user.save()
-                            current_user.times_visited += 1
-                            current_user.save()
-                            # return render(request, "vote/index.html", context={"candidates": SPL.objects.all(), "abc": "name"})
-                        # return redirect("voting:logic")
-                    elif request.method == "GET" and current_user == None:
-                        current_user = User.objects.create(ip=current_ip)
-                        current_user.save()
-                        current_user.times_visited += 1
-                        current_user.save()
-                    # return redirect("voting:logic")
-                    # return redirect("voting:logic")
-                    # return render(request, "vote/email.html")
-                    # current_user = User.objects.create(ip=current_ip)
-                    # current_user.save()
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
-            else:
-                return redirect("voting:logic")
-    elif current_user != None:
+
+        try:
+            current_user = User.objects.get(pk=current_ip)
+        except (User.DoesNotExist, KeyError):
+            current_user = User.objects.create(pk=current_ip)
+            current_user.ip = current_ip
+            current_user.times_visited += 1
+            current_user.save()
+        else:
+            current_user.times_visited += 1
+            current_user.save()
         return redirect("voting:logic")
+    elif request.method == "POST":
+        mail = request.POST['mail']
+        pattern = r'\w+40\d{4}@npschennai.com'
+        res = re.match(pattern, mail)
+        if res == None:
+            return render(request, "vote/email.html", context={"error_message": "You have not entered a valid school email address"})
+        else:
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            if x_forwarded_for:
+                current_ip = x_forwarded_for.split(',')[0]
+                try:
+                    socket.inet_aton(current_ip)
+                except socket.error:
+                    return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
+            else:
+                current_ip = request.META.get('REMOTE_ADDR')
+                try:
+                    socket.inet_aton(current_ip)
+                except socket.error:
+                    return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
+
+            try:
+                current_user = User.objects.get(pk=current_ip)
+            except (User.DoesNotExist, KeyError):
+                current_user = User.objects.create(
+                    pk=current_ip, email=mail, mail_real=True)
+                current_user.ip = current_ip
+                current_user.times_visited += 1
+                current_user.save()
+            else:
+                current_user.email = mail
+                current_user.mail_real = True
+                current_user.times_visited += 1
+                current_user.save()
+            return redirect("voting:logic")
 
 
 def index(request):
@@ -213,3 +195,11 @@ def logic(request):
             return redirect("voting:thanks")
         else:
             return HttpResponse("<h1>Some Server Error</h1>")
+
+
+def mail(request):
+    global current_user
+    if current_user == None:
+        return render(request, "vote/email.html")
+    else:
+        return redirect("voting:logic")
