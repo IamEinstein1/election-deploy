@@ -64,8 +64,9 @@ def ip(request):
             try:
                 current_user = User.objects.get(pk=current_ip)
             except (User.DoesNotExist, KeyError):
-                current_user = User.objects.create(
-                    pk=current_ip, email=mail, mail_real=True)
+                current_user = User.objects.create(pk=current_ip)
+                current_user.mail_real = True
+                current_user.email = mail
                 current_user.ip = current_ip
                 current_user.times_visited += 1
                 current_user.save()
