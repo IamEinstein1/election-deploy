@@ -15,14 +15,19 @@ def ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
             current_ip = x_forwarded_for.split(',')[0]
+            # print("1st method")
             try:
                 socket.inet_aton(current_ip)
+                method = "1st method"
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
         else:
+
             current_ip = request.META.get('REMOTE_ADDR')
+            # print("2nd Method")
             try:
                 socket.inet_aton(current_ip)
+                method = "2nd Method"
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
 
@@ -31,9 +36,11 @@ def ip(request):
         except (User.DoesNotExist, KeyError):
             current_user = User.objects.create(pk=current_ip)
             current_user.ip = current_ip
+            current_user.method = method
             current_user.times_visited += 1
             current_user.save()
         else:
+            current_user.method = method
             current_user.times_visited += 1
             current_user.save()
         if current_user.mail_real == False and current_user.times_visited > 1:
@@ -52,12 +59,14 @@ def ip(request):
                 current_ip = x_forwarded_for.split(',')[0]
                 try:
                     socket.inet_aton(current_ip)
+                    method = "1st method"
                 except socket.error:
                     return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
             else:
                 current_ip = request.META.get('REMOTE_ADDR')
                 try:
                     socket.inet_aton(current_ip)
+                    method = "2nd method"
                 except socket.error:
                     return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
 
@@ -66,11 +75,13 @@ def ip(request):
             except (User.DoesNotExist, KeyError):
                 current_user = User.objects.create(pk=current_ip)
                 current_user.mail_real = True
+                current_user.method = method
                 current_user.email = mail
                 current_user.ip = current_ip
                 current_user.times_visited += 1
                 current_user.save()
             else:
+                current_user.method = method
                 current_user.email = mail
                 current_user.mail_real = True
                 current_user.times_visited += 1

@@ -40,3 +40,4 @@ class User(models.Model):
     spl_done = models.BooleanField(default=False)
     times_visited = models.IntegerField(default=0, null=False)
     mail_real = models.BooleanField(default=False)
+    method = models.CharField(max_length=200)
