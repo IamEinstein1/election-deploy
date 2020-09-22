@@ -4,4 +4,4 @@
 
 **This project has been completed**
 
-(Link to the project)[https://election--app.herokuapp.com]
+[Link to the project](https://election--app.herokuapp.com)
