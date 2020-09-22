@@ -13,16 +13,7 @@ def ip(request):
     if request.method == "GET":
 
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            current_ip = x_forwarded_for.split(',')[0]
-            # print("1st method")
-            try:
-                socket.inet_aton(current_ip)
-                method = "1st method"
-            except socket.error:
-                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
-        else:
-
+        if not x_forwarded_for:
             current_ip = request.META.get('REMOTE_ADDR')
             # print("2nd Method")
             try:
@@ -30,6 +21,23 @@ def ip(request):
                 method = "2nd Method"
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
+
+        else:
+            current_ip = x_forwarded_for.split(',')[0]
+            # print("1st method")
+            try:
+                socket.inet_aton(current_ip)
+                method = "1st method"
+            except socket.error:
+                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
+
+            # current_ip = request.META.get('REMOTE_ADDR')
+            # print("2nd Method")
+            # try:
+                # socket.inet_aton(current_ip)
+                # method = "2nd Method"
+            # except socket.error:
+                # return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
 
         try:
             current_user = User.objects.get(pk=current_ip)
@@ -55,20 +63,28 @@ def ip(request):
             return render(request, "vote/email.html", context={"error_message": "You have not entered a valid school email address"})
         else:
             x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-            if x_forwarded_for:
-                current_ip = x_forwarded_for.split(',')[0]
-                try:
-                    socket.inet_aton(current_ip)
-                    method = "1st method"
-                except socket.error:
-                    return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
-            else:
+            if not x_forwarded_for:
                 current_ip = request.META.get('REMOTE_ADDR')
                 try:
                     socket.inet_aton(current_ip)
                     method = "2nd method"
                 except socket.error:
                     return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
+
+                # current_ip = x_forwarded_for.split(',')[0]
+                # try:
+                #     socket.inet_aton(current_ip)
+                #     method = "1st method"
+                # except socket.error:
+                #     return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
+            else:
+                current_ip = x_forwarded_for.split(',')[0]
+            # print("1st method")
+            try:
+                socket.inet_aton(current_ip)
+                method = "1st method"
+            except socket.error:
+                return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
 
             try:
                 current_user = User.objects.get(pk=current_ip)
