@@ -15,7 +15,6 @@ def ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if not x_forwarded_for:
             current_ip = request.META.get('REMOTE_ADDR')
-            # print("2nd Method")
             try:
                 socket.inet_aton(current_ip)
                 method = "2nd Method"
@@ -24,21 +23,11 @@ def ip(request):
 
         else:
             current_ip = x_forwarded_for.split(',')[0]
-            # print("1st method")
             try:
                 socket.inet_aton(current_ip)
                 method = "1st method"
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
-
-            # current_ip = request.META.get('REMOTE_ADDR')
-            # print("2nd Method")
-            # try:
-                # socket.inet_aton(current_ip)
-                # method = "2nd Method"
-            # except socket.error:
-                # return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
-
         try:
             current_user = User.objects.get(pk=current_ip)
         except (User.DoesNotExist, KeyError):
@@ -70,22 +59,13 @@ def ip(request):
                     method = "2nd method"
                 except socket.error:
                     return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP adress is not valid"})
-
-                # current_ip = x_forwarded_for.split(',')[0]
-                # try:
-                #     socket.inet_aton(current_ip)
-                #     method = "1st method"
-                # except socket.error:
-                #     return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
             else:
                 current_ip = x_forwarded_for.split(',')[0]
-            # print("1st method")
             try:
                 socket.inet_aton(current_ip)
                 method = "1st method"
             except socket.error:
                 return render(request, "vote/error.html", context={"type": "danger", "text": "Your IP address is not valid"})
-
             try:
                 current_user = User.objects.get(pk=current_ip)
             except (User.DoesNotExist, KeyError):
@@ -108,7 +88,6 @@ def ip(request):
 def index(request):
     try:
         if current_user == None:
-
             return redirect("voting:ip")
         elif current_user.mail_real == False:
             return redirect("voting:mail")
@@ -140,11 +119,9 @@ def spl(request):
             elif current_user.mail_real == False:
                 return redirect("voting:mail")
             else:
-                # global current_user
                 selected_candidate.votes += 1
                 selected_candidate.save()
                 current_user.spl_done = True
-
             current_user.save()
             return HttpResponseRedirect(reverse('voting:voted'))
 
