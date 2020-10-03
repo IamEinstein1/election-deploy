@@ -1,25 +1,15 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+{% extends 'vote/base.html' %}
+    {% block icon %}
     <style>
-      body {
-        padding-left: 25px;
-        padding-right: 25px;
-        padding-top: 25px;
-      }
       a {
         margin: 20px;
       }
     </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <title>RESULT</title>
-  </head>
-  <body class="bg-light">
+    {% endblock icon %}
+  {% block title %}
+  RESULT
+  {% endblock title %}
+{% block body %}
     <a href="#SPL" class="btn btn-success">SPL</a> &nbsp;
     <a href="#ASPL" class="btn btn-success">ASPL</a> &nbsp;
     <a href="{% url 'voting:logic' %}" class="btn btn-outline-success"
@@ -55,5 +45,4 @@
     </div>
     <br />
     {% endfor %}
-  </body>
-</html>
+{% endblock body %}

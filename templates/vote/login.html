@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-  </head>
-  <style>
-    body {
-      padding: 50px;
-    }
-  </style>
-  <body class="bg-light">
+
+{% extends 'vote/base.html' %}
+{% block title %}
+Login
+{% endblock title %}
+    {% block body %}
     <a href="{% url 'voting:logic' %}" class="btn btn-secondary">
       <svg
         width="1em"
@@ -59,18 +48,15 @@
           name="password"
         />
       </div>
-      <img
+
+      <button
+        type="submit"
+        name=""
+        class="btn btn-primary"
+      >Submit       <img
         src="https://image.freepik.com/free-icon/login-symbol_318-9896.jpg"
         alt=""
         style="height: 1em; width: 1em"
-      />
-      <input
-        type="submit"
-        name=""
-        value="Submit"
-        id="submit"
-        class="btn btn-primary"
-      />
+      /></button>
     </form>
-  </body>
-</html>
+    {% endblock body %}

@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="">
-  <head>
-    <title>Vote for SPL</title>
+{% extends 'vote/base.html' %}
+{% block title %}
+Vote for SPL
+{% endblock title %}
+{% block icon %}
 
     <link
       rel="icon"
@@ -9,11 +10,7 @@
       type="image/icon type"
     />
     <style>
-      body {
-        padding: 50px;
-        transition-duration: 1s;
-      }
-      .flex-container {
+    .flex-container {
         display: flex;
         flex-wrap: wrap;
       }
@@ -85,15 +82,9 @@
         color: #1487fa;
       }
     </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-
-  <body class="bg-light">
+{% endblock icon %}
+      
+{% block body %}
     <h1>Vote ASPL</h1>
     {% if error_message %}
 
@@ -127,5 +118,4 @@
       </div>
       <input class="btn btn-outline-primary" type="submit" value="Vote" />
     </form>
-  </body>
-</html>
+{% endblock body %}

@@ -1,34 +1,23 @@
-<html lang="en">
-  <head>
-    <style>
-      body {
-        padding: 50px;
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <link
-      rel="icon"
-      href="http://3.bp.blogspot.com/--VamP4SkSEA/VKGNAJUSMhI/AAAAAAAAB0Y/Cm_RpAm5kdE/s1600/2%2B(1).png"
-      type="image/icon type"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THANKS</title>
-  </head>
-  <body class="bg-light">
-    <h1 class="">Thanks</h1>
-    <br /><br />
-    <a href="{% url 'voting:logic' %}">
-      <img
-        src="http://3.bp.blogspot.com/--VamP4SkSEA/VKGNAJUSMhI/AAAAAAAAB0Y/Cm_RpAm5kdE/s1600/2%2B(1).png"
-        alt=""
-        class="rounded"
-      />
-    </a>
-    <br /><br /><br /><br />
-    <a class="btn btn-primary" href="{% url 'voting:login' %}">RESULTS</a>
-  </body>
-</html>
+{% extends 'vote/base.html' %}
+{% block icon %}
+
+<link
+  rel="icon"
+  href="http://3.bp.blogspot.com/--VamP4SkSEA/VKGNAJUSMhI/AAAAAAAAB0Y/Cm_RpAm5kdE/s1600/2%2B(1).png"
+  type="image/icon type"
+/>
+{% endblock icon %}
+ {% block title %} THANKS {% endblock title %} 
+{% block body %}
+<h1 class="">Thanks</h1>
+<br /><br />
+<a href="{% url 'voting:logic' %}">
+  <img
+    src="http://3.bp.blogspot.com/--VamP4SkSEA/VKGNAJUSMhI/AAAAAAAAB0Y/Cm_RpAm5kdE/s1600/2%2B(1).png"
+    alt=""
+    class="rounded"
+  />
+</a>
+<br /><br /><br /><br />
+<a class="btn btn-primary" href="{% url 'voting:login' %}">RESULTS</a>
+{% endblock body %}
