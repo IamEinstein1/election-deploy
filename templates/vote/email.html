@@ -1,30 +1,28 @@
-{% extends 'vote/base.html' %}
-
-{% block title %}
-Mail
-{% endblock title %}
-  {% block body %}
-  <h1>Enter your school mail</h1>
-  {% if error_message %}
-  <div class="alert alert-danger">{{error_message}}</div>
-  {% endif %}
-  <body class="bg-light">
-    <form action="{% url 'voting:ip' %}" method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        <input
-          type="text"
-          placeholder="Email"
-          id="mail"
-          name="mail"
-          class="form-control"
-        />
-      </div>
+{% extends 'vote/base.html' %} {% block title %} Mail {% endblock title %} {%
+block body %}
+<h1>Enter your school mail</h1>
+{% if error_message %}
+<div class="alert alert-danger">{{error_message}}</div>
+{% endif %}
+<body class="bg-light">
+  <form action="{% url 'voting:ip' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
       <input
-        type="submit"
-        value="Submit"
-        class="btn btn-outline-success"
-        id="submit"
+        type="text"
+        placeholder="Email"
+        id="mail"
+        name="mail"
+        class="form-control"
+        required
       />
-    </form>
+    </div>
+    <input
+      type="submit"
+      value="Submit"
+      class="btn btn-outline-success"
+      id="submit"
+    />
+  </form>
   {% endblock body %}
+</body>
