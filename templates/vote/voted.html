@@ -1,121 +1,114 @@
-{% extends 'vote/base.html' %}
-{% block title %}
-Vote for SPL
-{% endblock title %}
-{% block icon %}
+{% extends 'vote/base.html' %} {% block title %} Vote for SPL
+ {% endblock title %} {% block icon %}
 
-    <link
-      rel="icon"
-      href="https://brianpembershellharbour.files.wordpress.com/2011/08/vote-icon.jpg"
-      type="image/icon type"
-    />
-    <style>
-    .flex-container {
-        display: flex;
-        flex-wrap: wrap;
-      }
-      div .card {
-        padding: 1%;
-        transition-duration: 0.75s;
-        border-color: rgba(230, 235, 240, 0);
-        margin: 0.5%;
-      }
-      div .card:hover img {
-        opacity: 1;
-      }
-      img {
-        transition: 1s;
-        opacity: 0.75;
-      }
-      .img:hover {
-        opacity: 1;
-      }
+<link
+  rel="icon"
+  href="https://brianpembershellharbour.files.wordpress.com/2011/08/vote-icon.jpg"
+  type="image/icon type"
+/>
+<style>
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  div .card {
+    padding: 1%;
+    transition-duration: 0.75s;
+    border-color: rgba(230, 235, 240, 0);
+    margin: 0.5%;
+  }
+  div .card:hover img {
+    opacity: 1;
+  }
+  img {
+    transition: 1s;
+    opacity: 0.75;
+  }
+  .img:hover {
+    opacity: 1;
+  }
 
-      .card:hover {
-        position: relative;
-        animation-duration: 3s;
-        animation-fill-mode: forwards;
-        animation-name: ok2;
-        color: #1487fa;
-        font-weight: bold;
-        border-color: rgb(17, 132, 248);
-        border-width: 2px;
-      }
-      .input {
-        margin-top: 20px;
-      }
-      h1 {
-        transition-duration: 1s;
-        font-size: 50px;
-      }
-      @keyframes ok2 {
-        0% {
-          border-left: 100%;
-          font-size: 20px;
-          padding: 1%;
-        }
-        50% {
-          font-size: 25px;
-          padding: 0.5%;
-        }
-        100% {
-          font-size: 20px;
-          padding: 1%;
-        }
-      }
-      @keyframes ok {
-        0% {
-          font-size: 50px;
-        }
-        50% {
-          font-size: 55px;
-        }
-        100% {
-          font-size: 50px;
-        }
-      }
-      h1:hover {
-        position: relative;
-        animation-duration: 2s;
-        animation-fill-mode: forwards;
-        animation-name: ok;
-        color: #1487fa;
-      }
-    </style>
-{% endblock icon %}
-      
-{% block body %}
-    <h1>Vote ASPL</h1>
-    {% if error_message %}
+  .card:hover {
+    position: relative;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-name: ok2;
+    color: #1487fa;
+    font-weight: bold;
+    border-color: rgb(17, 132, 248);
+    border-width: 2px;
+  }
+  .input {
+    margin-top: 20px;
+  }
+  h1 {
+    transition-duration: 1s;
+    font-size: 50px;
+  }
+  @keyframes ok2 {
+    0% {
+      border-left: 100%;
+      font-size: 20px;
+      padding: 1%;
+    }
+    50% {
+      font-size: 25px;
+      padding: 0.5%;
+    }
+    100% {
+      font-size: 20px;
+      padding: 1%;
+    }
+  }
+  @keyframes ok {
+    0% {
+      font-size: 50px;
+    }
+    50% {
+      font-size: 55px;
+    }
+    100% {
+      font-size: 50px;
+    }
+  }
+  h1:hover {
+    position: relative;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-name: ok;
+    color: #1487fa;
+  }
+</style>
+{% endblock icon %} {% block body %}
+<h1>Vote ASPL</h1>
+{% if error_message %}
 
-    <br /><br />
-    <h1><span class="alert alert-danger">{{ error_message }}</span></h1>
-    <br /><br />
-    {% endif %}
+<br /><br />
+<h1><span class="alert alert-danger">{{ error_message }}</span></h1>
+<br /><br />
+{% endif %}
 
-    <form action="{% url 'voting:aspl' %}" method="post">
-      <div class="flex-container">
-        {% csrf_token %} {% for candidate in candidates %} &nbsp;
-        <div class="card rounded bg-light align-items-center">
-          <img
-            src="{{ candidate.img_url }}"
-            class="rounded"
-            alt="{{ candidate.name }}"
-            style="width: 150px; height: 150px"
-          />
-          <input
-            class="input"
-            type="radio"
-            name="ASPL"
-            id="candidate{{ forloop.counter }}"
-            value="{{ candidate.id }}"
-          />
-          <label for="candidate{{ forloop.counter }}"
-            >{{ candidate.name }}</label
-          >
-        </div>
-        &nbsp; {% endfor %}
-      </div>
-      <input class="btn btn-outline-primary" type="submit" value="Vote" />
-    </form>
+<form action="{% url 'voting:aspl' %}" method="post">
+  <div class="flex-container">
+    {% csrf_token %} {% for candidate in candidates %} &nbsp;
+    <div class="card rounded bg-light align-items-center">
+      <img
+        src="{{ candidate.img_url }}"
+        class="rounded"
+        alt="{{ candidate.name }}"
+        style="width: 150px; height: 150px"
+      />
+      <input
+        class="input"
+        type="radio"
+        name="ASPL"
+        id="candidate{{ forloop.counter }}"
+        value="{{ candidate.id }}"
+      />
+      <label for="candidate{{ forloop.counter }}">{{ candidate.name }}</label>
+    </div>
+    &nbsp; {% endfor %}
+  </div>
+  <input class="btn btn-outline-primary" type="submit" value="Vote" />
+</form>
 {% endblock body %}

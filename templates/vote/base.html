@@ -1,11 +1,9 @@
 <html lang="en">
   <head>
-  {% block icon %}
-  {% endblock icon %}
+    {% block icon %} {% endblock icon %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}
-    {% endblock title %}</title>
+    <title>{% block title %} {% endblock title %}</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -13,14 +11,16 @@
       crossorigin="anonymous"
     />
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap");
+
       body {
+        font-family: "Lora";
         padding: 5%;
+        transition-duration: 1s;
       }
     </style>
   </head>
   <body class="bg bg-light">
-  {% block body %}
-  {% endblock body %}
-  
+    {% block body %} {% endblock body %}
   </body>
 </html>
