@@ -47,8 +47,11 @@ def ip(request):
     elif request.method == "POST":
         mail = request.POST['mail']
         pattern = r'\w+40\d{4}@npschennai.com'
+        pattern_2 = r"\w+@npschennai.com"
         res = re.match(pattern, mail)
-        if res == None:
+        res2 = re.match(pattern_2, mail)
+
+        if res == None and res2 == None:
             return render(request, "vote/email.html", context={"error_message": "You have not entered a valid school email address"})
         else:
             x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
