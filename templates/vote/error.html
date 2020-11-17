@@ -1,21 +1,9 @@
-<html lang="en">
-  <head>
-    <style>
-      body {
-        padding-left: 25px;
-        padding-right: 25px;
-        padding-top: 25px;
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Error</title>
-  </head>
-  <body class="bg-light">
+{% extends 'vote/base.html' %}
+
+    {% block title %}
+    Error
+    {% endblock title %}
+    {% block body %}
     <div class="alert alert-{{ type }}" role="alert"><h3>{{ text }}</h3></div>
     <h1><span class="badge badge-info">Navigate</span></h1>
     <br /><br />
@@ -25,5 +13,4 @@
     <a href="{% url 'voting:login' %}" class="btn btn-outline-primary"
       >Result</a
     >
-  </body>
-</html>
+    {% endblock body %}

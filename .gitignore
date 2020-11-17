@@ -1,3 +1,6 @@
+__pycache__
+.vscode
+*__pycache__
 election/__pycache__/*
 vote/__pycache__/*
 __pycache__/*

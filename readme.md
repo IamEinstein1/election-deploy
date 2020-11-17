@@ -1,3 +1,7 @@
 # election project using docker, django
 
-## may be deployed using heroku
+## deployed using heroku
+
+**This project has been completed**
+
+[Link to the project](https://election--app.herokuapp.com)

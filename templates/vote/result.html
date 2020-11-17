@@ -1,56 +1,51 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{% extends 'vote/base.html' %} 
+{% block icon %}
+<style>
+  a {
+    margin: 20px;
+  }
+  @import url("https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap");
 
-    <style>
-      body {
-        padding-left: 25px;
-        padding-right: 25px;
-        padding-top: 25px;
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <title>RESULT</title>
-  </head>
-  <body class="bg-light">
-    <a href="#SPL" class="btn btn-success">SPL</a> &nbsp;
-    <a href="#ASPL" class="btn btn-success">ASPL</a> &nbsp;
-    <a href="{% url 'voting:logic' %}" class="btn btn-outline-success"
-      >Go back to vote</a
-    >
-    <a href="{% url 'voting:login' %}" class="btn btn-outline-success"
-      >Go back to login</a
-    >
-    <br />
-    <br />
-    <h1 class="alert alert-primary">RESULTS</h1>
-    <h4 id="SPL" class="alert alert-info">SPL</h4>
-    {% for item in spl_can %}
-    <div>
-      <img
-        class="rounded"
-        src="{{item.img_url}}"
-        style="width: 75px; height: 75px"
-        alt=""
-      />&nbsp; {{item.name}} - {{item.votes}}
-    </div>
-    <br />
-    {% endfor %}
-    <h4 id="ASPL" class="alert alert-info">ASPL</h4>
-    {% for item in aspl_can %}
-    <div>
-      <img
-        class="rounded"
-        src="{{item.img_url}}"
-        style="width: 75px; height: 75px"
-        alt=""
-      />&nbsp;{{item.name}} - {{item.votes}}
-    </div>
-    <br />
-    {% endfor %}
-  </body>
-</html>
+  body {
+    font-family: "Lora";
+    padding: 5%;
+  }
+</style>
+{% endblock icon %} 
+{% block title %} RESULT {% endblock title %} {% block body %}
+<a href="#SPL" class="btn btn-success">SPL</a> &nbsp;
+<a href="#ASPL" class="btn btn-success">ASPL</a> &nbsp;
+<a href="{% url 'voting:logic' %}" class="btn btn-outline-success"
+  >Go back to vote</a
+>
+<a href="{% url 'voting:login' %}" class="btn btn-outline-success"
+  >Go back to login</a
+>
+<br />
+<br />
+<h1 class="alert alert-primary">RESULTS</h1>
+<h4 id="SPL" class="alert alert-info">SPL</h4>
+{% for item in spl_can %}
+<div>
+  <img
+    class="rounded"
+    src="{{item.img_url}}"
+    style="width: 75px; height: 75px"
+    alt=""
+  />&nbsp; {{item.name}} - {{item.votes}}
+</div>
+<br />
+{% endfor %}
+<h4 id="ASPL" class="alert alert-info">ASPL</h4>
+{% for item in aspl_can %}
+<div>
+  <img
+    class="rounded"
+    src="{{item.img_url}}"
+    style="width: 75px; height: 75px"
+    alt=""
+  />&nbsp;{{item.name}} - {{item.votes}}
+</div>
+<br />
+{% endfor %} 
+{% endblock body %}
