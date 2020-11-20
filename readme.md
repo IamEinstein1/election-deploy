@@ -1,7 +1,13 @@
-# election project using docker, django
+# Elect-Web
 
-## deployed using heroku
+## Web Version of [Elect](https://github.com/elect-app)
 
-**This project has been completed**
+## [Link to the project](https://election--app.herokuapp.com)
 
-[Link to the project](https://election--app.herokuapp.com)
+### Open source code
+
+### Uses Bootstrap for design
+
+### Django as Backend
+
+#### Deployed Using Heroku
