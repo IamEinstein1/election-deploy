@@ -1,6 +1,5 @@
 # Elect-Web
-
-## Web Version of [Elect](https://github.com/elect-app)
+## A voting App
 
 ## [Link to the project](https://election--app.herokuapp.com)
 
