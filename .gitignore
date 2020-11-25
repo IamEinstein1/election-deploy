@@ -1,11 +1,10 @@
 __pycache__
-.vscode
 *__pycache__
 election/__pycache__/*
 vote/__pycache__/*
 __pycache__/*
-.vscode/*
 election/__pycache__
 vote/__pycache__
 __pycache__
-.vscode
+node_modules
+db.sqlite3

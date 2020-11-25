@@ -10,6 +10,7 @@ gunicorn = "*"
 django-heroku = "*"
 dj-database-url = "*"
 django-ipware = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.8"
